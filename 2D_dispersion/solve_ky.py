@@ -6,8 +6,9 @@ import random
 from dispexac import dispersion
 
 
-def omegasolve(omega, omegastarT, omegastarN,  kperp):
+def omegasolve(omega, omegastarT, omegastarN, kperp):
     return dispersion(omega, omegastarT, omegastarN, kperp, 1, 300)
+
 
 # def omegamin(omega_array, kperp):
 #     return mpmath.fabs(dispersion(omega_array[0]+omega_array[1]*1j, 100, 20, kperp, 1, 6))
@@ -28,11 +29,15 @@ for LbLt in LbLtlist:
                 if rootslist:
                     x0 = rootslist[-1]
                 else:
-                    x0 = random.random()*10j + random.uniform(-1,1)*20
-                omegafind = lambda omega: omegasolve(omega, LbLt, LtLn*LbLt,  kperp)
-                root = mpmath.findroot(omegafind, x0, tol = 1e-10)
-                if rootslist: 
-                    if mpmath.fabs(mpmath.fabs(root) - mpmath.fabs(rootslist[-1])) / mpmath.fabs(rootslist[-1]) > 0.6:
+                    x0 = random.random() * 10j + random.uniform(-1, 1) * 20
+                omegafind = lambda omega: omegasolve(omega, LbLt, LtLn * LbLt, kperp)
+                root = mpmath.findroot(omegafind, x0, tol=1e-10)
+                if rootslist:
+                    if (
+                        mpmath.fabs(mpmath.fabs(root) - mpmath.fabs(rootslist[-1]))
+                        / mpmath.fabs(rootslist[-1])
+                        > 0.6
+                    ):
                         root = 0
             except Exception as e:
                 print(e)
@@ -42,11 +47,15 @@ for LbLt in LbLtlist:
     roots[LbLt] = rootslist
 
 
-fig, axes = plt.subplots(3,3, squeeze=1)
+fig, axes = plt.subplots(3, 3, squeeze=1)
 axes = axes.flatten()
 for i in range(9):
     ax = axes[i]
-    ax.plot(kperplist, np.imag(roots[LbLtlist[i]])/2, label = 'LbLt' + str(float(LbLtlist[i])))
+    ax.plot(
+        kperplist,
+        np.imag(roots[LbLtlist[i]]) / 2,
+        label="LbLt" + str(float(LbLtlist[i])),
+    )
     ax.legend()
-fig.suptitle('LtLn = 0.05')
+fig.suptitle("LtLn = 0.05")
 plt.show()

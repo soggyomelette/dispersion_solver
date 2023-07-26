@@ -5,9 +5,12 @@ mpmath.mp.dps = 120
 
 
 def Z(x):
-    return 1j * mpmath.sqrt(mpmath.mp.pi) * mpmath.exp(-x**2)*mpmath.erfc(-1j*x)
+    return 1j * mpmath.sqrt(mpmath.mp.pi) * mpmath.exp(-(x**2)) * mpmath.erfc(-1j * x)
+
 
 calculatederb = {}
+
+
 def derbIab(zeta, m):
     if m == 1:
         return 0.5 * (
@@ -27,12 +30,15 @@ def derbIab(zeta, m):
         )
         return calculatederb[m]
 
+
 calculatedera = {}
+
+
 def deraIaa(zeta, m):
     if m == 0:
-        return 1 / 4 * (Z(mpmath.sqrt(zeta / 2))) ** 2 + mpmath.sqrt(zeta / 2) * Z(mpmath.sqrt(zeta / 2)) * (
-            1 + mpmath.sqrt(zeta / 2) * Z(mpmath.sqrt(zeta / 2))
-        )
+        return 1 / 4 * (Z(mpmath.sqrt(zeta / 2))) ** 2 + mpmath.sqrt(zeta / 2) * Z(
+            mpmath.sqrt(zeta / 2)
+        ) * (1 + mpmath.sqrt(zeta / 2) * Z(mpmath.sqrt(zeta / 2)))
     elif m == 1:
         return (
             -(1 + zeta) * deraIaa(zeta, 0)
@@ -54,7 +60,7 @@ def deraIaa(zeta, m):
         return calculatedera[m]
 
 
-'''def derwderbIab(zeta, m):
+"""def derwderbIab(zeta, m):
     if m == 0:
         return Z(mpmath.sqrt(zeta / 2)) * (1 + mpmath.sqrt(zeta) * Z(mpmath.sqrt(zeta / 2))) / mpmath.sqrt(2 * zeta)
     elif m == 1:
@@ -110,7 +116,7 @@ def derwderaIaa(zeta, m):
             + (2 * m - 1 + zeta) * derwderaIaa(zeta, m - 1)
             + 2 * (m - 1) * deraIaa(zeta, m - 2)
             + 2 * (m - 1) * zeta * derwderaIaa(zeta, m - 2)
-        )'''
+        )"""
 
 
 def dispersion(omega, omegastarT, omegastarN, kperp, tau, m):
@@ -119,15 +125,13 @@ def dispersion(omega, omegastarT, omegastarN, kperp, tau, m):
         disp = disp + (
             (-omega + omegastarN - 1.5 * omegastarT) * derbIab(omega, i)
             - omegastarT * deraIaa(omega, i)
-        ) * mpmath.fac(2 * i) / ((mpmath.fac(i)) ** 4) * (0.5 * kperp) ** (
-            2 * i
-        )
+        ) * mpmath.fac(2 * i) / ((mpmath.fac(i)) ** 4) * (0.5 * kperp) ** (2 * i)
     calculatedera.clear()
     calculatederb.clear()
     return disp
 
 
-'''def dispersionder(omega, omegastarT, omegastarN, kperp, tau, m):
+"""def dispersionder(omega, omegastarT, omegastarN, kperp, tau, m):
     dispder = 0 
     for i in range(0, m + 1):
         dispder = dispder + (
@@ -137,16 +141,14 @@ def dispersion(omega, omegastarT, omegastarN, kperp, tau, m):
         ) * mpmath.fac(2 * i) / ((mpmath.fac(i)) ** 4) * (0.5 * kperp) ** (
             2 * i
         )
-    return dispder'''
+    return dispder"""
 
 
-'''reom = mpmath.linspace(0, 10, 300)
+"""reom = mpmath.linspace(0, 10, 300)
 imom = mpmath.linspace(0, 10, 300)
 X, Y = np.meshgrid(reom, imom)
 displot = np.absolute(dispersion(X + Y * 1j, 300, 150, 0.8, 1, 50))
 fig, ax = plt.subplots()
 con =  ax.contour(X, Y, displot)
 ax.clabel(con)
-plt.show()'''
-
-
+plt.show()"""
