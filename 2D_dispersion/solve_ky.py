@@ -7,7 +7,7 @@ from dispexac import dispersion
 
 
 def omegasolve(omega, omegastarT, omegastarN, kperp):
-    return dispersion(omega, omegastarT, omegastarN, kperp, 1, 300)
+    return dispersion(omega, omegastarT, omegastarN, kperp, 1, 80)
 
 
 # def omegamin(omega_array, kperp):
@@ -16,9 +16,9 @@ def omegasolve(omega, omegastarT, omegastarN, kperp):
 # def omegader(omega, kperp):
 #     return dispersionder(omega, 100, 30, kperp, 1, 6)
 
-kperplist = mpmath.linspace(8, 10, 150)
+kperplist = mpmath.linspace(1, 6, 150)
 LbLtlist = mpmath.linspace(100, 500, 9)
-LtLn = 3
+LtLn = 0.5
 roots = dict()
 for LbLt in LbLtlist:
     rootslist = list()
