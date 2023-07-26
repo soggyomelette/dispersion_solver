@@ -7,7 +7,7 @@ from dispexac import dispersion
 
 
 def omegasolve(omega, omegastarT, omegastarN, kperp):
-    return dispersion(omega, omegastarT, omegastarN, kperp, 1, 80)
+    return dispersion(omega, omegastarT, omegastarN, kperp, 1, 150)
 
 
 # def omegamin(omega_array, kperp):
@@ -57,5 +57,5 @@ for i in range(9):
         label="LbLt" + str(float(LbLtlist[i])),
     )
     ax.legend()
-fig.suptitle("LtLn = 0.05")
+fig.suptitle("LtLn = 0.5")
 plt.show()
