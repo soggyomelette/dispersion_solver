@@ -5,19 +5,18 @@ import random
 
 from dispexac import dispersion
 
+# increase m if dispersion relation doesn't converge
+# decrease m if root finding takes too much time
+
 
 def omegasolve(omega, omegastarT, omegastarN, kperp):
-    return dispersion(omega, omegastarT, omegastarN, kperp, 1, 150)
+    return dispersion(omega, omegastarT, omegastarN, kperp, 1, 100)
 
 
-# def omegamin(omega_array, kperp):
-#     return mpmath.fabs(dispersion(omega_array[0]+omega_array[1]*1j, 100, 20, kperp, 1, 6))
+n = 2
 
-# def omegader(omega, kperp):
-#     return dispersionder(omega, 100, 30, kperp, 1, 6)
-
-kperplist = mpmath.linspace(1, 6, 150)
-LbLtlist = mpmath.linspace(100, 500, 9)
+kperplist = mpmath.linspace(0.01, 3, 100)
+LbLtlist = mpmath.linspace(5, 11, n**2)
 LtLn = 0.5
 roots = dict()
 for LbLt in LbLtlist:
@@ -29,7 +28,9 @@ for LbLt in LbLtlist:
                 if rootslist:
                     x0 = rootslist[-1]
                 else:
-                    x0 = random.random() * 10j + random.uniform(-1, 1) * 20
+                    # use a good initial guess or
+                    # a random value in the complex plane
+                    x0 = 1 + 0.5j
                 omegafind = lambda omega: omegasolve(omega, LbLt, LtLn * LbLt, kperp)
                 root = mpmath.findroot(omegafind, x0, tol=1e-10)
                 if rootslist:
@@ -47,9 +48,9 @@ for LbLt in LbLtlist:
     roots[LbLt] = rootslist
 
 
-fig, axes = plt.subplots(3, 3, squeeze=1)
+fig, axes = plt.subplots(n, n, squeeze=0)
 axes = axes.flatten()
-for i in range(9):
+for i in range(n**2):
     ax = axes[i]
     ax.plot(
         kperplist,
@@ -57,5 +58,5 @@ for i in range(9):
         label="LbLt" + str(float(LbLtlist[i])),
     )
     ax.legend()
-fig.suptitle("LtLn = 0.5")
+fig.suptitle("LtLn = 0.5, tau = 1")
 plt.show()

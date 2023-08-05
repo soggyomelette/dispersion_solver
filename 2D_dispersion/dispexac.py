@@ -1,7 +1,8 @@
 import mpmath
 
 
-mpmath.mp.dps = 120
+# set precision for computation
+mpmath.mp.dps = 200
 
 
 def Z(x):
